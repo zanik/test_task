@@ -18,7 +18,9 @@ GitHub.prototype._request = function(options, callback) {
         }else if(exist) {
             store.get(options.path, function(err, val) {
                 if(err) {
-                    callback(new Error('Ошибка чтения из кеша!'));
+                    console.log('Ошибка чтения из кеша');
+                    self._q.push({opt: options, cb: callback});
+                    self._active < POSSIBLE_REQUESTS && self._execute();
                 }else{
                     callback(null, JSON.parse(val));
                 }
@@ -31,7 +33,7 @@ GitHub.prototype._request = function(options, callback) {
 };
 
 GitHub.prototype._execute = function() {
-    if(this._active < POSSIBLE_REQUESTS && this._q.length) {
+    while(this._active < POSSIBLE_REQUESTS && this._q.length) {
         this._active += 1;
         this._makeRequest(this._q.shift());
     }
