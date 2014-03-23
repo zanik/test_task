@@ -1,0 +1,21 @@
+extends ./layout
+block content
+  .container
+    .row
+      .col-xs-12
+        table.table.table-bordered
+          thead
+            tr
+              th(style='width: 200px') Пользователь
+              th Коммит
+          tbody
+            each commit, i in commits
+              tr(style=!isNaN(commit.sha) ? "background-color: #E6F1F6" : "background-color: white")
+                td
+                  img(src='http://www.gravatar.com/avatar/#{commit.gravID}')
+                  p=commit.name
+                  a.btn.btn-default(href='mailto:#{commit.email}') Написать
+                td
+                  p Коммит сделан: #{commit.date.split('T')[0]}
+                  p=commit.message
+                  p Число Фибоначчи: #{fib(i)}

@@ -1,0 +1,7 @@
+extends ./layout
+block content
+  h1 Репозитории принадлежащие #{owner}
+  ul
+    each repo in repos
+      li
+        a(href=repo.url)=repo.name
